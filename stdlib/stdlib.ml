@@ -27,6 +27,7 @@ external raise : exn -> 'a = "%raise"
 external raise_notrace : exn -> 'a = "%raise_notrace"
 
 let failwith s = raise(Failure s)
+let echoueavec = failwith
 let invalid_arg s = raise(Invalid_argument s)
 
 exception Exit
@@ -80,6 +81,7 @@ external ( != ) : 'a -> 'a -> bool = "%noteq"
 (* Boolean operations *)
 
 external not : bool -> bool = "%boolnot"
+let non : bool -> bool = not
 external ( & ) : bool -> bool -> bool = "%sequand"
 external ( && ) : bool -> bool -> bool = "%sequand"
 external ( or ) : bool -> bool -> bool = "%sequor"

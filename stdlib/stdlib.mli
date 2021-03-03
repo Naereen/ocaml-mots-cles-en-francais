@@ -41,6 +41,9 @@ val invalid_arg : string -> 'a
 val failwith : string -> 'a
 (** Raise exception [Failure] with the given string. *)
 
+val echoueavec : string -> 'a
+(** Declenchez l'exception [Failure] avec la chaine donnee. *)
+
 exception Exit
 (** The [Exit] exception is not raised by any library function.  It is
     provided for use in your programs. *)
@@ -210,6 +213,9 @@ external ( != ) : 'a -> 'a -> bool = "%noteq"
 
 external not : bool -> bool = "%boolnot"
 (** The boolean negation. *)
+
+val non : bool -> bool
+(** La négation booléenne. *)
 
 external ( && ) : bool -> bool -> bool = "%sequand"
 (** The boolean 'and'. Evaluation is sequential, left-to-right:

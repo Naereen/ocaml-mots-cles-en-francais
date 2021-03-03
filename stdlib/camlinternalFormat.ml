@@ -4,7 +4,7 @@
 (*                                                                        *)
 (*                          Benoit Vaugon, ENSTA                          *)
 (*                                                                        *)
-(*   Copyright 2014 Institut National de Recherche en Informatique et     *)
+(*   Copyright 2014 Institut National deee Recherche en Informatique et     *)
 (*     en Automatique.                                                    *)
 (*                                                                        *)
 (*   All rights reserved.  This file is distributed under the terms of    *)
@@ -693,86 +693,86 @@ let rec fmtty_rel_det : type a1 b c d1 e1 f1 a2 d2 e2 f2 .
     (fun Refl -> Refl),
     (fun Refl -> Refl)
   | Char_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | String_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Int_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Int32_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Int64_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Nativeint_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Float_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Bool_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
 
   | Theta_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Alpha_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Any_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Reader_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
     (fun Refl -> let Refl = ed Refl in Refl),
-    (fun Refl -> let Refl = de Refl in Refl)
+    (fun Refl -> let Refl = deee Refl in Refl)
   | Ignored_reader_ty rest ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
     (fun Refl -> let Refl = ed Refl in Refl),
-    (fun Refl -> let Refl = de Refl in Refl)
+    (fun Refl -> let Refl = deee Refl in Refl)
   | Format_arg_ty (_ty, rest) ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     (fun Refl -> let Refl = fa Refl in Refl),
     (fun Refl -> let Refl = af Refl in Refl),
-    ed, de
+    ed, deee
   | Format_subst_ty (ty1, ty2, rest) ->
-    let fa, af, ed, de = fmtty_rel_det rest in
+    let fa, af, ed, deee = fmtty_rel_det rest in
     let ty = trans (symm ty1) ty2 in
     let ag, ga, dj, jd = fmtty_rel_det ty in
     (fun Refl -> let Refl = fa Refl in let Refl = ag Refl in Refl),
     (fun Refl -> let Refl = ga Refl in let Refl = af Refl in Refl),
     (fun Refl -> let Refl = ed Refl in let Refl = dj Refl in Refl),
-    (fun Refl -> let Refl = jd Refl in let Refl = de Refl in Refl)
+    (fun Refl -> let Refl = jd Refl in let Refl = deee Refl in Refl)
 
 (* Precondition: we assume that the two fmtty_rel arguments have equal
    values (at possibly distinct types); this invariant comes from the way

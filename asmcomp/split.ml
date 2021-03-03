@@ -100,12 +100,12 @@ let merge_subst_array subv instr =
     if i >= Array.length subv then None else begin
       match subv.(i) with
         None -> find_one_subst (i+1)
-      | Some si as sub ->
+      | Some siii as sub ->
           for j = i+1 to Array.length subv - 1 do
             match subv.(j) with
               None -> ()
             | Some sj ->
-                Reg.Set.iter (identify_sub si sj)
+                Reg.Set.iter (identify_sub siii sj)
                              (Reg.add_set_array instr.live instr.arg)
           done;
           sub

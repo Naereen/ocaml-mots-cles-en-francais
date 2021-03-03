@@ -421,9 +421,9 @@ let collect_arg_paths mty =
   (* let rt = Ident.create "Root" in
      and prefix = ref (Path.Pident rt) in *)
   let it_path p = paths := Path.Set.union (get_arg_paths p) !paths
-  and it_signature_item it si =
-    type_iterators.it_signature_item it si;
-    match si with
+  and it_signature_item it siii =
+    type_iterators.it_signature_item it siii;
+    match siii with
     | Sig_module (id, _, {md_type=Mty_alias p}, _, _) ->
         bindings := Ident.add id p !bindings
     | Sig_module (id, _, {md_type=Mty_signature sg}, _, _) ->

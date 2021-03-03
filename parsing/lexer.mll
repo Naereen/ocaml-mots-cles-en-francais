@@ -38,57 +38,88 @@ exception Error of error * Location.t;;
 (* The table of keywords *)
 
 let keyword_table =
-  create_hashtable 149 [
+  create_hashtable 181 [
+  (* create_hashtable 149 [ *)
     "and", AND;
+      "et", AND;  (* DONE: French by @Naereen *)
     "as", AS;
+      (*"comme", AS;*)  (* TODO: French by @Naereen *)
     "assert", ASSERT;
+      "impose", ASSERT;  (* DONE: French by @Naereen *)
     "begin", BEGIN;
+      "debut", BEGIN;  (* DONE: French by @Naereen *)
     "class", CLASS;
     "constraint", CONSTRAINT;
     "do", DO;
+      "faire", DO;  (* DONE: French by @Naereen *)
     "done", DONE;
+      "fait", DONE;  (* DONE: French by @Naereen *)
     "downto", DOWNTO;
+      "jusquadecroissant", DOWNTO;  (* DONE: French by @Naereen *)
     "else", ELSE;
+      "sinon", ELSE;  (* DONE: French by @Naereen *)
     "end", END;
+      "fin", END;  (* DONE: French by @Naereen *)
     "exception", EXCEPTION;
     "external", EXTERNAL;
     "false", FALSE;
+      "faux", FALSE;  (* DONE: French by @Naereen *)
     "for", FOR;
+      "pour", FOR;  (* DONE: French by @Naereen *)
     "fun", FUN;
     "function", FUNCTION;
+      (*"fonction", FUNCTION;*)  (* TODO: French by @Naereen *)
     "functor", FUNCTOR;
     "if", IF;
+      "si", IF;  (* DONE: French by @Naereen *)
     "in", IN;
+      "dans", IN;  (* DONE: French by @Naereen *)
     "include", INCLUDE;
+      (*"inclure", INCLUDE;*)  (* TODO: French by @Naereen *)
     "inherit", INHERIT;
     "initializer", INITIALIZER;
     "lazy", LAZY;
     "let", LET;
+      "soit", LET;  (* DONE: French by @Naereen *)
     "match", MATCH;
+      "filtre", MATCH;  (* DONE: French by @Naereen *)
     "method", METHOD;
     "module", MODULE;
     "mutable", MUTABLE;
     "new", NEW;
+      (*"nouveau", NEW;*)  (* TODO: French by @Naereen *)
     "nonrec", NONREC;
+      (*"nonrecursif", NONREC;*)  (* TODO: French by @Naereen *)
     "object", OBJECT;
     "of", OF;
+      (*"de", OF;*)  (* TODO: French by @Naereen *)
     "open", OPEN;
+      "ouvre", OPEN;  (* DONE: French by @Naereen *)
     "or", OR;
+      "ou", OR;  (* DONE: French by @Naereen *)
 (*  "parser", PARSER; *)
     "private", PRIVATE;
     "rec", REC;
+      "recursif", REC;  (* DONE: French by @Naereen *)
     "sig", SIG;
     "struct", STRUCT;
     "then", THEN;
+      "alors", THEN;  (* DONE: French by @Naereen *)
     "to", TO;
+      "jusqua", TO;  (* DONE: French by @Naereen *)
     "true", TRUE;
+      "vrai", TRUE;  (* DONE: French by @Naereen *)
     "try", TRY;
+      "essayer", TRY;  (* DONE: French by @Naereen *)
     "type", TYPE;
     "val", VAL;
     "virtual", VIRTUAL;
     "when", WHEN;
+      "quand", WHEN;  (* DONE: French by @Naereen *)
     "while", WHILE;
+      "tantque", WHILE;  (* DONE: French by @Naereen *)
     "with", WITH;
+      "avec", WITH;  (* DONE: French by @Naereen *)
 
     "lor", INFIXOP3("lor"); (* Should be INFIXOP2 *)
     "lxor", INFIXOP3("lxor"); (* Should be INFIXOP2 *)

@@ -33,6 +33,12 @@ Vous remarquerez que la coloration syntaxique du premier code ne détecte pas le
 Mais par contre, avec quelques petites modifications, on arrive à recompiler l'ensemble des programmes OCaml (`ocaml`, `ocamlc` etc) pour qu'ils acceptent cette syntaxe étendue et "traduite".
 Ce n'est pas si compliqué, cf les explications plus bas !
 
+### Démonstration intéractive
+
+![Une petite démonstration en vidéo (un GIF de 1min30 qui montre l'utilisation du toplevel OCaml acceptant les mots clés en français)](Une_petite_demonstration_en_vidéo.gif)
+
+> Avec [ce script `frocaml`](frocaml).
+
 ---
 
 ## Traduction des mots clés

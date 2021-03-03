@@ -1,0 +1,50 @@
+(**
+ * Un petit programme écrit en OCaml (https://OCaml.org), rédigé avec des mots-clés en anglais,
+ * Il définit une fonction factorielle récursive et exécute un test de test.
+ *
+ * Voir <https://github.com/Naereen/ocaml-mots-cles-en-francais/>
+ *
+ * Copyright Lilian Besson, 2021, publié sous la licence MIT
+ * Voir <https://lbesson.mit-license.org/>
+*)
+
+
+(* Include the English one, to compare with it *)
+let rec fact (n : int) =
+  match n with
+  | n when n < 0 -> failwith "Error: n has to be >= 0 for fact."
+  | 0 -> 1
+  | 1 | 2 -> if n=1 then 1 else 2
+  | n -> n * (fact (n-1))
+;;
+
+soit recursif fact2 (n : int) =
+  filtre n avec
+  | n quand n < 0 ->
+    echoueavec "Erreur: n doit être >= 0 pour fact2."
+  | 0 -> 1
+  | 1 | 2 -> si n=1 alors 1 sinon 2
+  | n -> n * (fact2 (n-1))
+;;
+
+soit afficher = Format.printf;;
+
+afficher "Test avec fact2 écrite avec les mots clés en français !\n%!";;
+impose (1 = (fact2 1));;
+impose (2 = (fact2 2));;
+impose (6 = (fact2 3));;
+pour n = 6 jusqua 10 faire
+  afficher "fact2(%i) = %i\n%!" n (fact2 n);
+fait;;
+pour n = 13 jusquadecroissant 11 faire
+  debut
+    afficher "fact2(%i) = %i\n%!" n (fact2 n);
+    impose ((fact2 n) = (fact n));
+  fin
+fait;;
+
+soit n = ref 3 dans
+tantque !n < 6 faire
+  afficher "fact2(%i) = %i\n%!" !n (fact2 !n);
+  incr n;
+fait;;

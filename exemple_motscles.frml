@@ -11,19 +11,12 @@
 (* Ces changements sont faciles à faire avec un Stdlib_french.ml, si on voulait, ou un ~/.ocamlinit *)
 soit echoueavec = failwith;;
 soit ( non ) = ( not );;
-soit ( ou ) = ( or );;
 
 soit afficher = Format.printf;;
 
 afficher "Testons presque tous les autres mots-clés Français...\n%!";;
 
-soit x:int =
-  essayer
-    debut
-      2021/0
-    fin
-  avec _ -> 42
-;;
+soit x:int = essayer debut 2021/0 fin avec _ -> 42;;
 impose (x = 42);;
 
 soit y = 40
@@ -36,10 +29,7 @@ fin;;
 impose vrai;;
 impose (non faux);;
 impose (vrai || faux);;
-(* impose (vrai ou faux);; *)
-(* 'or' is Deprecated and I couldn't succed in adding it to stdlib.ml{,i} *)
 impose (vrai && (non faux));;
-(* 'et' est pour autre chose *)
 
 ouvre List;;
 impose ((length [1;2;3]) = 3);;

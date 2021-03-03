@@ -18,7 +18,7 @@ let rec fact (n : int) =
 
 let print = Format.printf;;
 
-print "Test with fact written with the keywords in English! (default mode)";;
+print "Test with fact written with the keywords in English! (default mode)\n%!";;
 assert (1 = (fact 1));;
 assert (2 = (fact 2));;
 assert (6 = (fact 3));;

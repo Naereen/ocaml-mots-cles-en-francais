@@ -1,15 +1,15 @@
 # Petite expérience sur le code source de OCaml
 
-> Voir cette discussion en anglais : <https://discuss.ocaml.org/t/what-files-to-modify-in-ocaml-ocaml-source-code-to-have-a-parser-accepting-keywords-in-french-traduire-mots-cles-en-francais/7400/3>
-> Voir [le code source de OCaml](https://GitHub.com/OCaml/OCaml), dont ce dossier est une bifurcation avec juste quelques lignes modifiées.
+> Voir cette discussion en anglais : <https://discuss.ocaml.org/t/what-files-to-modify-in-ocaml-ocaml-source-code-to-have-a-parser-accepting-keywords-in-french-traduire-mots-cles-en-francais/7400/3>.
+> Si besoin, voir [le code source de OCaml](https://GitHub.com/OCaml/OCaml), dont ce dossier est une minuscule bifurcation ("fork") avec juste quelques lignes modifiées.
 
 ---
 
 ## Objectifs
 
-À des fins pédagogiques, j'ai voulu modifié une version locale du code source de [@ocaml/ocaml](https://GitHub.com/OCaml/OCaml), et changer l'analyseur lexicale pour que les commandes finales `ocaml` (et `ocamlc` et `ocamlopt`) **acceptent de lire le code OCaml où (certains) des mots-clés sont traduits en français**.
+À des fins pédagogiques, j'ai voulu modifié une version locale du code source de [@ocaml/ocaml](https://GitHub.com/OCaml/OCaml), et changer l'analyseur lexicale pour pouvoir recompiler OCaml, afin que ses programmes `ocaml` (le toplevel, et les deux compilateurs `ocamlc` et `ocamlopt`) **acceptent de lire le code OCaml où (certains) des mots-clés sont traduits en français**.
 
-Par exemple, j'aimerais pouvoir lire, exécuter ou compiler un petit programme comme celui-ci :
+Par exemple, j'aimerais pouvoir lire et exécuter (ou compiler) un petit programme comme celui-ci :
 
 ```ocaml
 soit recursive factorielle (n : entier) =
@@ -31,6 +31,9 @@ let rec fact (n : int) =
 ;;
 ```
 
+Vous remarquerez que la coloration syntaxique du premier code ne détecte pas les mots clés traduits en français, et c'est normal.
+Mais par contre, avec quelques petites modifications, on arrive à recompiler l'ensemble des programmes OCaml (`ocaml`, `ocamlc` etc) pour qu'ils acceptent cette syntaxe étendue et "traduite".
+Ce n'est pas si compliqué, cf les explications plus bas !
 
 ---
 
@@ -38,13 +41,34 @@ let rec fact (n : int) =
 
 La table ci-dessous précise la traduction de tous les mots clés *usuels* de OCaml.
 
-and | et
-assert | impose
-begin | debut
+| Anglais  |  *Français*         |
+|:---------|:--------------------|
+| `and`    | `et`                |
+| `assert` | `impose`            |
+| `begin`  | `debut`             |
+| `do`     | `faire`             |
+| `done`   | `fait`              |
+| `downto` | `jusquadecroissant` |
+| `else`   | `sinon`             |
+| `end`    | `fin`               |
+| `false`  | `faux`              |
+| `for`    | `pour`              |
+| `if`     | `si`                |
+| `in`     | `dans`              |
+| `let`    | `soit`              |
+| `match`  | `filtre`            |
+| `open`   | `ouvre`             |
+| `or`     | `ou`                |
+| `rec`    | `recursif`          |
+| `then`   | `alors`             |
+| `to`     | `jusqua`            |
+| `true`   | `vrai`              |
+| `try`    | `essayer`           |
+| `when`   | `quand`             |
+| `while`  | `tantque`           |
+| `with`   | `avec`              |
 
-TODO: convert with <https://www.tablesgenerator.com/markdown_tables>
-
-Quelques remarques :
+*Quelques remarques :*
 
 - Il n'y a pas d'accent, et pas d'espace ni guillemet dans les mots clés, notamment `debut`, `jusqua` et `jusquadecroissant` sont un peu moches. On devrait pouvoir ajouter les accents, mais pas les espaces ni les guillemets. J'ai voulu faire simple et rapide !
 - Je n'ai pas visé à traduire tous les mots clés, seulement ceux que j'utilise en général.
@@ -62,8 +86,16 @@ Dans ces deux fichiers en OCaml normal, avec les mots clés en anglais, avec l'e
 
 Et dans les deux fichiers avec l'extension `.frml` (choisie pour s'amuser, elle ne sera pas reconnue par votre système d'exploitation, ou votre éditeur) :
 
-- [`example_fact.frml`](example_fact.frml) définit une fonction factorielle récursive et affiche plusieurs valeurs, avec des boucles `pour` et `tantque` ;
-- [`example_keywords.frml`](example_keywords.frml) fait plein de petits tests, pour utiliser tous les mots clés différents du langage.
+- [`exemple_factorielle.frml`](exemple_factorielle.frml) définit une fonction factorielle récursive et affiche plusieurs valeurs, avec des boucles `pour` et `tantque` ;
+- [`exemple_motscles.frml`](exemple_motscles.frml) fait plein de petits tests, pour utiliser tous les mots clés différents du langage.
+
+### Tests avec la factorielle
+
+![Tests avec la factorielle](Exemple_avec_factorielle.png)
+
+### Tests avec tous les mots clés
+
+![Tests avec tous les mots clés](Exemple_avec_plein_de_mots_cles.png)
 
 ---
 
@@ -87,7 +119,7 @@ Soyez bien prudent et choisissez un dossier **local** et pas votre `/usr/` ou `/
 Ensuite, voici un aperçu des modifications à effectuer dans le fichier [`parser/lexer.mll`], qui contrôle le lexer (analyse lexicale) de tout le reste des binaires OCaml :
 
 1. augmenter la taille `let keyword_table = create_hashtable 181` : on peut augmenter de beaucoup sans risque ;
-2. pour chaque mot clé que l'on souhaite traduire, il suffit d'ajouter une ligne avec sa traduction : (voir ce commit : XXX).
+2. pour chaque mot clé que l'on souhaite traduire, il suffit d'ajouter une ligne avec sa traduction : (voir ce commit : cc2feb0a5).
 
 ```diff
  diff --git a/parsing/lexer.mll b/parsing/lexer.mll
@@ -106,59 +138,57 @@ Ensuite, voici un aperçu des modifications à effectuer dans le fichier [`parse
 +    "impose", ASSERT;  (* DONE: French by @Naereen *)
 ```
 
-3. ensuite, lors de la recompilation de l'ensemble (avec un simple `make`, précédé d'un premier appel à `./configure`), vous aurez quelques erreurs parce que certains mots clés français comme `et`, `de`, `si` sont utilisés à quelques endroits de certains fichiers. Ma solution a été naïve mais efficace : renommer ces noms de variables, en `ettt`, `deee` et `siii` (voir ce commit : XXX) ;
+3. ensuite, lors de la recompilation de l'ensemble (avec un simple `make`, précédé d'un premier appel à `./configure`), vous aurez quelques erreurs parce que certains mots clés français comme `et`, `de`, `si` sont utilisés à quelques endroits de certains fichiers. Ma solution a été naïve mais efficace : renommer ces noms de variables, en `ettt`, `deee` et `siii` (voir ce commit : 3dd32d17b) ;
 
 ```diff
- diff --git a/asmcomp/split.ml b/asmcomp/split.ml
- index 55fe38c34..931537737 100644
- --- a/asmcomp/split.ml
- +++ b/asmcomp/split.ml
- @@ -100,12 +100,12 @@ let merge_subst_array subv instr =
-      if i >= Array.length subv then None else begin
-        match subv.(i) with
-          None -> find_one_subst (i+1)
- -      | Some si as sub ->
- +      | Some siii as sub ->
-            for j = i+1 to Array.length subv - 1 do
-              match subv.(j) with
-                None -> ()
-              | Some sj ->
- -                Reg.Set.iter (identify_sub si sj)
- +                Reg.Set.iter (identify_sub siii sj)
+diff --git a/asmcomp/split.ml b/asmcomp/split.ml
+index 55fe38c34..931537737 100644
+--- a/asmcomp/split.ml
++++ b/asmcomp/split.ml
+@@ -100,12 +100,12 @@ let merge_subst_array subv instr =
+     if i >= Array.length subv then None else begin
+       match subv.(i) with
+         None -> find_one_subst (i+1)
+-      | Some si as sub ->
++      | Some siii as sub ->
+           for j = i+1 to Array.length subv - 1 do
+             match subv.(j) with
+               None -> ()
+             | Some sj ->
+-                Reg.Set.iter (identify_sub si sj)
++                Reg.Set.iter (identify_sub siii sj)
 ```
 
-4. enfin, dans la librairie standard ([`stdlib/stdlib.ml`](stdlib/stdlib.ml) et son fichier d'interface [`stdlib/stdlib.mli`](stdlib/stdlib.mli)), on peut rajouter des versions françaises de certaines fonctions. Je ne l'ai fait que pour `failwith` traduit en `echoueavec`, pour montrer que c'était facile.
+4. enfin, dans la librairie standard ([`stdlib/stdlib.ml`](stdlib/stdlib.ml) et son fichier d'interface [`stdlib/stdlib.mli`](stdlib/stdlib.mli)), on peut rajouter des versions françaises de certaines fonctions. Je ne l'ai fait que pour `failwith` traduit en `echoueavec`, pour montrer que c'était facile. (voir ce commit : 1f6de8285).
 
 ```diff
- diff --git a/stdlib/stdlib.ml b/stdlib/stdlib.ml
- index 5daaf0867..f658dd090 100644
- --- a/stdlib/stdlib.ml
- +++ b/stdlib/stdlib.ml
- @@ -27,6 +27,7 @@ external raise : exn -> 'a = "%raise"
-  external raise_notrace : exn -> 'a = "%raise_notrace"
-  
-  let failwith s = raise(Failure s)
- +let echoueavec = failwith
-  let invalid_arg s = raise(Invalid_argument s)
+diff --git a/stdlib/stdlib.ml b/stdlib/stdlib.ml
+index 5daaf0867..f658dd090 100644
+--- a/stdlib/stdlib.ml
++++ b/stdlib/stdlib.ml
+@@ -27,6 +27,7 @@ external raise : exn -> 'a = "%raise"
+ external raise_notrace : exn -> 'a = "%raise_notrace"
 
- diff --git a/stdlib/stdlib.mli b/stdlib/stdlib.mli
- index 28c1381eb..5b098d476 100644
- --- a/stdlib/stdlib.mli
- +++ b/stdlib/stdlib.mli
- @@ -41,6 +41,9 @@ val invalid_arg : string -> 'a
-  val failwith : string -> 'a
-  (** Raise exception [Failure] with the given string. *)
-  
- +val echoueavec : string -> 'a
- +(** Declenchez l'exception [Failure] avec la chaine donnee. *)
- +
+ let failwith s = raise(Failure s)
++let echoueavec = failwith
+ let invalid_arg s = raise(Invalid_argument s)
+diff --git a/stdlib/stdlib.mli b/stdlib/stdlib.mli
+index 28c1381eb..5b098d476 100644
+--- a/stdlib/stdlib.mli
++++ b/stdlib/stdlib.mli
+@@ -41,6 +41,9 @@ val invalid_arg : string -> 'a
+ val failwith : string -> 'a
+ (** Raise exception [Failure] with the given string. *)
+
++val echoueavec : string -> 'a
++(** Declenchez l'exception [Failure] avec la chaine donnee. *)
 ```
 
-5. les modifications complètes que j'avais effectuées sont lisibles dans ce fichier [`modification_to_codebase.diff`](modification_to_codebase.diff).
+5. Les modifications complètes que j'avais effectuées sont lisibles dans ce fichier [`modification_to_codebase.diff`](modification_to_codebase.diff), et dans les trois commits cités plus hauts. TODO: ajouter lien commit ?
 
 ---
 
-## A propos de ce dossier
+## À propos de ce dossier
 
 Je ne suis PAS l'auteur de 99.99999% de ce code !
 

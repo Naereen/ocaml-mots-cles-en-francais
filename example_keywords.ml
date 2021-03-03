@@ -25,9 +25,7 @@ end;;
 assert true;;
 assert (not false);;
 assert (true || false);;
-assert (true or false);;  (* Deprecated *)
 assert (true && (not false));;
-(* 'and' is for another purpose *)
 
 open List;;
 assert ((length [1;2;3]) = 3);;

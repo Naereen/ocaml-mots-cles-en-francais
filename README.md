@@ -154,7 +154,7 @@ Ensuite, voici un aperçu des modifications à effectuer dans le fichier [`parse
  +
 ```
 
-5. les modifications complètes sont lisibles dans ce fichier [`modification_to_codebase.txt`](modification_to_codebase.txt) TODO:
+5. les modifications complètes que j'avais effectuées sont lisibles dans ce fichier [`modification_to_codebase.diff`](modification_to_codebase.diff).
 
 ---
 

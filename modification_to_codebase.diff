@@ -1,0 +1,317 @@
+diff --git a/asmcomp/split.ml b/asmcomp/split.ml
+index 55fe38c34..931537737 100644
+--- a/asmcomp/split.ml
++++ b/asmcomp/split.ml
+@@ -100,12 +100,12 @@ let merge_subst_array subv instr =
+     if i >= Array.length subv then None else begin
+       match subv.(i) with
+         None -> find_one_subst (i+1)
+-      | Some si as sub ->
++      | Some siii as sub ->
+           for j = i+1 to Array.length subv - 1 do
+             match subv.(j) with
+               None -> ()
+             | Some sj ->
+-                Reg.Set.iter (identify_sub si sj)
++                Reg.Set.iter (identify_sub siii sj)
+                              (Reg.add_set_array instr.live instr.arg)
+           done;
+           sub
+diff --git a/parsing/lexer.mll b/parsing/lexer.mll
+index 89d687630..fe1cad73e 100644
+--- a/parsing/lexer.mll
++++ b/parsing/lexer.mll
+@@ -38,57 +38,88 @@ exception Error of error * Location.t;;
+ (* The table of keywords *)
+ 
+ let keyword_table =
+-  create_hashtable 149 [
++  create_hashtable 181 [
++  (* create_hashtable 149 [ *)
+     "and", AND;
++      "et", AND;  (* DONE: French by @Naereen *)
+     "as", AS;
++      (*"comme", AS;*)  (* TODO: French by @Naereen *)
+     "assert", ASSERT;
++      "impose", ASSERT;  (* DONE: French by @Naereen *)
+     "begin", BEGIN;
++      "debut", BEGIN;  (* DONE: French by @Naereen *)
+     "class", CLASS;
+     "constraint", CONSTRAINT;
+     "do", DO;
++      "faire", DO;  (* DONE: French by @Naereen *)
+     "done", DONE;
++      "fait", DONE;  (* DONE: French by @Naereen *)
+     "downto", DOWNTO;
++      "jusquadecroissant", DOWNTO;  (* DONE: French by @Naereen *)
+     "else", ELSE;
++      "sinon", ELSE;  (* DONE: French by @Naereen *)
+     "end", END;
++      "fin", END;  (* DONE: French by @Naereen *)
+     "exception", EXCEPTION;
+     "external", EXTERNAL;
+     "false", FALSE;
++      "faux", FALSE;  (* DONE: French by @Naereen *)
+     "for", FOR;
++      "pour", FOR;  (* DONE: French by @Naereen *)
+     "fun", FUN;
+     "function", FUNCTION;
++      (*"fonction", FUNCTION;*)  (* TODO: French by @Naereen *)
+     "functor", FUNCTOR;
+     "if", IF;
++      "si", IF;  (* DONE: French by @Naereen *)
+     "in", IN;
++      "dans", IN;  (* DONE: French by @Naereen *)
+     "include", INCLUDE;
++      (*"inclure", INCLUDE;*)  (* TODO: French by @Naereen *)
+     "inherit", INHERIT;
+     "initializer", INITIALIZER;
+     "lazy", LAZY;
+     "let", LET;
++      "soit", LET;  (* DONE: French by @Naereen *)
+     "match", MATCH;
++      "filtre", MATCH;  (* DONE: French by @Naereen *)
+     "method", METHOD;
+     "module", MODULE;
+     "mutable", MUTABLE;
+     "new", NEW;
++      (*"nouveau", NEW;*)  (* TODO: French by @Naereen *)
+     "nonrec", NONREC;
++      (*"nonrecursif", NONREC;*)  (* TODO: French by @Naereen *)
+     "object", OBJECT;
+     "of", OF;
++      (*"de", OF;*)  (* TODO: French by @Naereen *)
+     "open", OPEN;
++      "ouvre", OPEN;  (* DONE: French by @Naereen *)
+     "or", OR;
++      "ou", OR;  (* DONE: French by @Naereen *)
+ (*  "parser", PARSER; *)
+     "private", PRIVATE;
+     "rec", REC;
++      "recursif", REC;  (* DONE: French by @Naereen *)
+     "sig", SIG;
+     "struct", STRUCT;
+     "then", THEN;
++      "alors", THEN;  (* DONE: French by @Naereen *)
+     "to", TO;
++      "jusqua", TO;  (* DONE: French by @Naereen *)
+     "true", TRUE;
++      "vrai", TRUE;  (* DONE: French by @Naereen *)
+     "try", TRY;
++      "essayer", TRY;  (* DONE: French by @Naereen *)
+     "type", TYPE;
+     "val", VAL;
+     "virtual", VIRTUAL;
+     "when", WHEN;
++      "quand", WHEN;  (* DONE: French by @Naereen *)
+     "while", WHILE;
++      "tantque", WHILE;  (* DONE: French by @Naereen *)
+     "with", WITH;
++      "avec", WITH;  (* DONE: French by @Naereen *)
+ 
+     "lor", INFIXOP3("lor"); (* Should be INFIXOP2 *)
+     "lxor", INFIXOP3("lxor"); (* Should be INFIXOP2 *)
+diff --git a/stdlib/camlinternalFormat.ml b/stdlib/camlinternalFormat.ml
+index 239d027ca..2b14df6b8 100644
+--- a/stdlib/camlinternalFormat.ml
++++ b/stdlib/camlinternalFormat.ml
+@@ -4,7 +4,7 @@
+ (*                                                                        *)
+ (*                          Benoit Vaugon, ENSTA                          *)
+ (*                                                                        *)
+-(*   Copyright 2014 Institut National de Recherche en Informatique et     *)
++(*   Copyright 2014 Institut National deee Recherche en Informatique et     *)
+ (*     en Automatique.                                                    *)
+ (*                                                                        *)
+ (*   All rights reserved.  This file is distributed under the terms of    *)
+@@ -693,86 +693,86 @@ let rec fmtty_rel_det : type a1 b c d1 e1 f1 a2 d2 e2 f2 .
+     (fun Refl -> Refl),
+     (fun Refl -> Refl)
+   | Char_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | String_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Int_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Int32_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Int64_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Nativeint_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Float_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Bool_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+ 
+   | Theta_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Alpha_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Any_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Reader_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+     (fun Refl -> let Refl = ed Refl in Refl),
+-    (fun Refl -> let Refl = de Refl in Refl)
++    (fun Refl -> let Refl = deee Refl in Refl)
+   | Ignored_reader_ty rest ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+     (fun Refl -> let Refl = ed Refl in Refl),
+-    (fun Refl -> let Refl = de Refl in Refl)
++    (fun Refl -> let Refl = deee Refl in Refl)
+   | Format_arg_ty (_ty, rest) ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     (fun Refl -> let Refl = fa Refl in Refl),
+     (fun Refl -> let Refl = af Refl in Refl),
+-    ed, de
++    ed, deee
+   | Format_subst_ty (ty1, ty2, rest) ->
+-    let fa, af, ed, de = fmtty_rel_det rest in
++    let fa, af, ed, deee = fmtty_rel_det rest in
+     let ty = trans (symm ty1) ty2 in
+     let ag, ga, dj, jd = fmtty_rel_det ty in
+     (fun Refl -> let Refl = fa Refl in let Refl = ag Refl in Refl),
+     (fun Refl -> let Refl = ga Refl in let Refl = af Refl in Refl),
+     (fun Refl -> let Refl = ed Refl in let Refl = dj Refl in Refl),
+-    (fun Refl -> let Refl = jd Refl in let Refl = de Refl in Refl)
++    (fun Refl -> let Refl = jd Refl in let Refl = deee Refl in Refl)
+ 
+ (* Precondition: we assume that the two fmtty_rel arguments have equal
+    values (at possibly distinct types); this invariant comes from the way
+diff --git a/stdlib/stdlib.ml b/stdlib/stdlib.ml
+index 5daaf0867..f658dd090 100644
+--- a/stdlib/stdlib.ml
++++ b/stdlib/stdlib.ml
+@@ -27,6 +27,7 @@ external raise : exn -> 'a = "%raise"
+ external raise_notrace : exn -> 'a = "%raise_notrace"
+ 
+ let failwith s = raise(Failure s)
++let echoueavec = failwith
+ let invalid_arg s = raise(Invalid_argument s)
+ 
+ exception Exit
+@@ -80,6 +81,7 @@ external ( != ) : 'a -> 'a -> bool = "%noteq"
+ (* Boolean operations *)
+ 
+ external not : bool -> bool = "%boolnot"
++let non : bool -> bool = not
+ external ( & ) : bool -> bool -> bool = "%sequand"
+ external ( && ) : bool -> bool -> bool = "%sequand"
+ external ( or ) : bool -> bool -> bool = "%sequor"
+diff --git a/stdlib/stdlib.mli b/stdlib/stdlib.mli
+index 28c1381eb..5b098d476 100644
+--- a/stdlib/stdlib.mli
++++ b/stdlib/stdlib.mli
+@@ -41,6 +41,9 @@ val invalid_arg : string -> 'a
+ val failwith : string -> 'a
+ (** Raise exception [Failure] with the given string. *)
+ 
++val echoueavec : string -> 'a
++(** Declenchez l'exception [Failure] avec la chaine donnee. *)
++
+ exception Exit
+ (** The [Exit] exception is not raised by any library function.  It is
+     provided for use in your programs. *)
+@@ -211,6 +214,9 @@ external ( != ) : 'a -> 'a -> bool = "%noteq"
+ external not : bool -> bool = "%boolnot"
+ (** The boolean negation. *)
+ 
++val non : bool -> bool
++(** La négation booléenne. *)
++
+ external ( && ) : bool -> bool -> bool = "%sequand"
+ (** The boolean 'and'. Evaluation is sequential, left-to-right:
+    in [e1 && e2], [e1] is evaluated first, and if it returns [false],
+diff --git a/typing/mtype.ml b/typing/mtype.ml
+index 07b28b34a..e03e30fb8 100644
+--- a/typing/mtype.ml
++++ b/typing/mtype.ml
+@@ -421,9 +421,9 @@ let collect_arg_paths mty =
+   (* let rt = Ident.create "Root" in
+      and prefix = ref (Path.Pident rt) in *)
+   let it_path p = paths := Path.Set.union (get_arg_paths p) !paths
+-  and it_signature_item it si =
+-    type_iterators.it_signature_item it si;
+-    match si with
++  and it_signature_item it siii =
++    type_iterators.it_signature_item it siii;
++    match siii with
+     | Sig_module (id, _, {md_type=Mty_alias p}, _, _) ->
+         bindings := Ident.add id p !bindings
+     | Sig_module (id, _, {md_type=Mty_signature sg}, _, _) ->
+diff --git a/typing/typemod.ml b/typing/typemod.ml
+index 83ba44759..0d724db48 100644
+--- a/typing/typemod.ml
++++ b/typing/typemod.ml
+@@ -2278,7 +2278,7 @@ and type_open_decl_aux ?used_slot ?toplevel funct_body names env od =
+       List.map (function
+         | Sig_value(id, vd, _) -> Sig_value(id, vd, visibility)
+         | Sig_type(id, td, rs, _) -> Sig_type(id, td, rs, visibility)
+-        | Sig_typext(id, ec, et, _) -> Sig_typext(id, ec, et, visibility)
++        | Sig_typext(id, ec, ettt, _) -> Sig_typext(id, ec, ettt, visibility)
+         | Sig_module(id, mp, md, rs, _) ->
+             Sig_module(id, mp, md, rs, visibility)
+         | Sig_modtype(id, mtd, _) -> Sig_modtype(id, mtd, visibility)

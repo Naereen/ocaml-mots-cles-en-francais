@@ -1,0 +1,7 @@
+{1 Warning}
+  This library is part of the internal OCaml compiler API, and is
+not the language standard library.
+  There are no compatibility guarantees between releases, so code written
+against these modules must be willing to depend on specific OCaml compiler
+versions.
+{!modules:Ast_iterator Ast_mapper Ast_helper Builtin_attributes Pprintast Parse Location Syntaxerr Attr_helper Asttypes Lexer Longident Parser Docstrings Printast Parsetree Ast_invariants Depend Terminfo Clflags Lazy_backtrack Ccomp Arg_helper Local_store Strongly_connected_components Identifiable Build_path_prefix_map Int_replace_polymorphic_compare Profile Targetint Binutils Numbers Misc Load_path Consistbl Warnings Domainstate Config Pparse}

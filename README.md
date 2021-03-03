@@ -3,11 +3,9 @@
 > Voir cette discussion en anglais : <https://discuss.ocaml.org/t/what-files-to-modify-in-ocaml-ocaml-source-code-to-have-a-parser-accepting-keywords-in-french-traduire-mots-cles-en-francais/7400/3>.
 > Si besoin, voir [le code source de OCaml](https://GitHub.com/OCaml/OCaml), dont ce dossier est une minuscule bifurcation ("fork") avec juste quelques lignes modifiées.
 
----
-
 ## Objectifs
 
-À des fins pédagogiques, j'ai voulu modifié une version locale du code source de [@ocaml/ocaml](https://GitHub.com/OCaml/OCaml), et changer l'analyseur lexicale pour pouvoir recompiler OCaml, afin que ses programmes `ocaml` (le toplevel, et les deux compilateurs `ocamlc` et `ocamlopt`) **acceptent de lire le code OCaml où (certains) des mots-clés sont traduits en français**.
+À des fins pédagogiques, j'ai voulu modifier une version locale du code source de [@ocaml/ocaml](https://GitHub.com/OCaml/OCaml), et changer l'analyseur lexicale pour pouvoir recompiler OCaml, afin que ses programmes `ocaml` (le "toplevel", et les deux compilateurs `ocamlc` et `ocamlopt`) **acceptent de lire le code OCaml où (certains) des mots-clés sont traduits en français**.
 
 Par exemple, j'aimerais pouvoir lire et exécuter (ou compiler) un petit programme comme celui-ci :
 
@@ -101,7 +99,7 @@ Et dans les deux fichiers avec l'extension `.frml` (choisie pour s'amuser, elle 
 
 ## Modifications à faire pour obtenir cela
 
-> - Ces modifications ont été faites le 03 mars 2021, au commit `8b8168ee0`, avec OCaml version `4.13.0+dev0-2020-10-19`.
+> - Ces modifications ont été faites le 03 mars 2021, [au commit `8b8168ee0`](https://github.com/Naereen/ocaml-mots-cles-en-francais/commit/8b8168ee0), avec OCaml version `4.13.0+dev0-2020-10-19`.
 > - Ces modifications ont marchés *sur ma machine* (Ubuntu 18.03), avec le compilateur `gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0`, et n'ont aucune raison de fonctionner sur d'autres machines.
 > - :warning: Je ne vais PAS maintenir ce dépôt, c'était juste pour une expérience !
 
@@ -110,7 +108,7 @@ Pour reproduire cette expérience chez vous, il vous faut : un ordinateur sous G
 ```bash
 cd ~/un/sous/dossier/qui/va/bien/
 git clone https://github.com/Naereen/ocaml-mots-cles-en-francais/
-cd ocaml-mots-cles-en-francais/
+cd ocaml-mots-cles-en-francais/ocaml-sources/
 ./configure --prefix=/home/nomutilisateur/un/sous/dossier/qui/va/bien/ocaml-mots-cles-en-francais/
 ```
 
@@ -119,7 +117,7 @@ Soyez bien prudent et choisissez un dossier **local** et pas votre `/usr/` ou `/
 Ensuite, voici un aperçu des modifications à effectuer dans le fichier [`parser/lexer.mll`], qui contrôle le lexer (analyse lexicale) de tout le reste des binaires OCaml :
 
 1. augmenter la taille `let keyword_table = create_hashtable 181` : on peut augmenter de beaucoup sans risque ;
-2. pour chaque mot clé que l'on souhaite traduire, il suffit d'ajouter une ligne avec sa traduction : (voir ce commit : cc2feb0a5).
+2. pour chaque mot clé que l'on souhaite traduire, il suffit d'ajouter une ligne avec sa traduction : (voir [ce commit : `cc2feb0a5`](https://github.com/Naereen/ocaml-mots-cles-en-francais/commit/cc2feb0a5)).
 
 ```diff
  diff --git a/parsing/lexer.mll b/parsing/lexer.mll
@@ -138,7 +136,7 @@ Ensuite, voici un aperçu des modifications à effectuer dans le fichier [`parse
 +    "impose", ASSERT;  (* DONE: French by @Naereen *)
 ```
 
-3. ensuite, lors de la recompilation de l'ensemble (avec un simple `make`, précédé d'un premier appel à `./configure`), vous aurez quelques erreurs parce que certains mots clés français comme `et`, `de`, `si` sont utilisés à quelques endroits de certains fichiers. Ma solution a été naïve mais efficace : renommer ces noms de variables, en `ettt`, `deee` et `siii` (voir ce commit : 3dd32d17b) ;
+3. ensuite, lors de la recompilation de l'ensemble (avec un simple `make`, précédé d'un premier appel à `./configure`), vous aurez quelques erreurs parce que certains mots clés français comme `et`, `de`, `si` sont utilisés à quelques endroits de certains fichiers. Ma solution a été naïve mais efficace : renommer ces noms de variables, en `ettt`, `deee` et `siii` (voir [ce commit : `3dd32d17b`](https://github.com/Naereen/ocaml-mots-cles-en-francais/commit/3dd32d17b)) ;
 
 ```diff
 diff --git a/asmcomp/split.ml b/asmcomp/split.ml
@@ -159,7 +157,7 @@ index 55fe38c34..931537737 100644
 +                Reg.Set.iter (identify_sub siii sj)
 ```
 
-4. enfin, dans la librairie standard ([`stdlib/stdlib.ml`](stdlib/stdlib.ml) et son fichier d'interface [`stdlib/stdlib.mli`](stdlib/stdlib.mli)), on peut rajouter des versions françaises de certaines fonctions. Je ne l'ai fait que pour `failwith` traduit en `echoueavec`, pour montrer que c'était facile. (voir ce commit : 1f6de8285).
+4. enfin, dans la librairie standard ([`stdlib/stdlib.ml`](ocaml-sources/stdlib/stdlib.ml) et son fichier d'interface [`stdlib/stdlib.mli`](ocaml-sources/stdlib/stdlib.mli)), on peut rajouter des versions françaises de certaines fonctions. Je ne l'ai fait que pour `failwith` traduit en `echoueavec`, pour montrer que c'était facile. (voir [ce commit : `1f6de8285`](https://github.com/Naereen/ocaml-mots-cles-en-francais/commit/1f6de8285)).
 
 ```diff
 diff --git a/stdlib/stdlib.ml b/stdlib/stdlib.ml
@@ -184,7 +182,7 @@ index 28c1381eb..5b098d476 100644
 +(** Declenchez l'exception [Failure] avec la chaine donnee. *)
 ```
 
-5. Les modifications complètes que j'avais effectuées sont lisibles dans ce fichier [`modification_to_codebase.diff`](modification_to_codebase.diff), et dans les trois commits cités plus hauts. TODO: ajouter lien commit ?
+5. Les modifications complètes que j'avais effectuées sont lisibles dans ce fichier [`modification_to_codebase.diff`](modification_to_codebase.diff), et dans les trois commits cités plus hauts.
 
 ---
 
